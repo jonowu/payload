@@ -1,13 +1,19 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import { ShimmerEffect } from '../../../elements/ShimmerEffect';
-import { Props } from './types';
+import { RichTextProps as Props } from './types';
+import { useConfig } from '../../../utilities/Config';
 
-const RichText = lazy(() => import('./RichText'));
 
-const RichTextField: React.FC<Props> = (props) => (
-  <Suspense fallback={<ShimmerEffect height="35vh" />}>
-    <RichText {...props} />
-  </Suspense>
-);
+const RichTextField: React.FC<Props> = (props) => {
+  const config = useConfig();
+  const RichText = config.admin.richText.component;
+
+
+  return (
+    <Suspense fallback={<ShimmerEffect height="35vh" />}>
+      <RichText {...props} />
+    </Suspense>
+  );
+};
 
 export default RichTextField;

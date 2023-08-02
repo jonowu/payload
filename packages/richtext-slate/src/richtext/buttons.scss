@@ -1,0 +1,15 @@
+@import 'payload/dist/admin/scss/styles.scss';
+
+.rich-text__button {
+  position: relative;
+  cursor: pointer;
+
+  svg {
+    width: base(.75);
+    height: base(.75);
+  }
+
+  &--disabled {
+    opacity: .4;
+  }
+}

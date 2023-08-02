@@ -1,7 +1,10 @@
 import { Config, SanitizedConfig } from '../src/config/types';
 import { buildConfig as buildPayloadConfig } from '../src/config/build';
+import { slateAdapter } from '../packages/richtext-slate/src';
 
-export function buildConfigWithDefaults(testConfig?: Partial<Config>): Promise<SanitizedConfig> {
+export function buildConfigWithDefaults(
+  testConfig?: Partial<Config>,
+): Promise<SanitizedConfig> {
   const [name] = process.argv.slice(2);
   const config: Config = {
     telemetry: false,
@@ -13,10 +16,14 @@ export function buildConfigWithDefaults(testConfig?: Partial<Config>): Promise<S
   };
 
   config.admin = {
-    autoLogin: process.env.PAYLOAD_PUBLIC_DISABLE_AUTO_LOGIN === 'true' ? false : {
-      email: 'dev@payloadcms.com',
-      password: 'test',
-    },
+    richText: slateAdapter() as any, // TODO: Fix this
+    autoLogin:
+      process.env.PAYLOAD_PUBLIC_DISABLE_AUTO_LOGIN === 'true'
+        ? false
+        : {
+          email: 'dev@payloadcms.com',
+          password: 'test',
+        },
     ...(config.admin || {}),
     webpack: (webpackConfig) => {
       const existingConfig = typeof testConfig?.admin?.webpack === 'function'
@@ -25,9 +32,10 @@ export function buildConfigWithDefaults(testConfig?: Partial<Config>): Promise<S
       return {
         ...existingConfig,
         name,
-        cache: process.env.NODE_ENV === 'test'
-          ? { type: 'memory' }
-          : existingConfig.cache,
+        cache:
+          process.env.NODE_ENV === 'test'
+            ? { type: 'memory' }
+            : existingConfig.cache,
       };
     },
   };

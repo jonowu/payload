@@ -20,6 +20,7 @@ import { PayloadRequest } from '../express/types';
 import { Where } from '../types';
 import { User } from '../auth/types';
 import type { PayloadBundler } from '../bundlers/types';
+import { RichTextAdapter } from '../admin/components/forms/field-types/RichText/types';
 
 type Email = {
   fromName: string;
@@ -37,7 +38,7 @@ type GeneratePreviewURLOptions = {
 
 export type GeneratePreviewURL = (
   doc: Record<string, unknown>,
-  options: GeneratePreviewURLOptions
+  options: GeneratePreviewURLOptions,
 ) => Promise<string | null> | string | null;
 
 export type EmailTransport = Email & {
@@ -74,7 +75,7 @@ export function hasTransportOptions(
 
 export type GraphQLExtension = (
   graphQL: typeof GraphQL,
-  payload: Payload
+  payload: Payload,
 ) => Record<string, unknown>;
 
 export type InitOptions = {
@@ -85,7 +86,7 @@ export type InitOptions = {
   /** Extra configuration options that will be passed to MongoDB */
   mongoOptions?: ConnectOptions & {
     /** Set false to disable $facet aggregation in non-supporting databases, Defaults to true */
-    useFacet?: boolean
+    useFacet?: boolean;
   };
 
   /** Secure string that Payload will use for any encryption workflows */
@@ -162,7 +163,7 @@ export type AccessArgs<T = any, U = any> = {
  * @see https://payloadcms.com/docs/access-control/overview
  */
 export type Access<T = any, U = any> = (
-  args: AccessArgs<T, U>
+  args: AccessArgs<T, U>,
 ) => AccessResult | Promise<AccessResult>;
 
 /** Equivalent to express middleware, but with an enhanced request object */
@@ -182,14 +183,14 @@ export type Endpoint = {
   path: string;
   /** HTTP method (or "all") */
   method:
-  | 'get'
-  | 'head'
-  | 'post'
-  | 'put'
-  | 'patch'
-  | 'delete'
-  | 'connect'
-  | 'options';
+    | 'get'
+    | 'head'
+    | 'post'
+    | 'put'
+    | 'patch'
+    | 'delete'
+    | 'connect'
+    | 'options';
   /**
    * Middleware that will be called when the path/method matches
    *
@@ -245,6 +246,8 @@ export type LocalizationConfig = {
 export type Config = {
   /** Configure admin dashboard */
   admin?: {
+    /** The richtext editor */
+    richText?: RichTextAdapter;
     /** The slug of a Collection that you want be used to log in to the Admin dashboard. */
     user?: string;
     /** Base meta data to use for the Admin panel. Included properties are titleSuffix, ogImage, and favicon. */
@@ -272,7 +275,7 @@ export type Config = {
      *
      * @default "/build"
      * */
-    buildPath?: string
+    buildPath?: string;
     /** If set to true, the entire Admin panel will be disabled. */
     disable?: boolean;
     /** Replace the entirety of the index.html file used by the Admin panel. Reference the base index.html file to ensure your replacement has the appropriate HTML elements. */
@@ -288,12 +291,14 @@ export type Config = {
     /** The route the user will be redirected to after being inactive for too long. */
     inactivityRoute?: string;
     /** Automatically log in as a user when visiting the admin dashboard. */
-    autoLogin?: false | {
-      /** The email address of the user to login as */
-      email: string;
-      /** The password of the user to login as */
-      password: string;
-    }
+    autoLogin?:
+      | false
+      | {
+          /** The email address of the user to login as */
+          email: string;
+          /** The password of the user to login as */
+          password: string;
+        };
     /**
      * Add extra and/or replace built-in components with custom components
      *
@@ -317,8 +322,8 @@ export type Config = {
        */
       afterDashboard?: React.ComponentType<any>[];
       /**
-      * Add custom components before the email/password field
-      */
+       * Add custom components before the email/password field
+       */
       beforeLogin?: React.ComponentType<any>[];
       /**
        * Add custom components after the email/password field
@@ -484,7 +489,7 @@ export type Config = {
    *   window: 15 * 60 * 100, // 1.5 minutes,
    *   max: 500,
    * }
-  */
+   */
   rateLimit?: {
     window?: number;
     max?: number;
@@ -560,9 +565,9 @@ export type SanitizedConfig = Omit<
   globals: SanitizedGlobalConfig[];
   endpoints: Endpoint[];
   paths: {
-    configDir: string
-    config: string
-    rawConfig: string
+    configDir: string;
+    config: string;
+    rawConfig: string;
   };
 };
 

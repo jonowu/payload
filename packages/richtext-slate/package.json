@@ -1,0 +1,27 @@
+{
+  "name": "@payloadcms/richtext-slate",
+  "version": "0.0.1",
+  "description": "The officially supported Slate richtext adapter for Payload",
+  "main": "index.js",
+  "repository": "https://github.com/payloadcms/payload",
+  "author": "Payload CMS, Inc.",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "payload": "^1.11.8"
+  },
+  "dependencies": {
+    "slate": "^0.91.4",
+    "slate-history": "^0.86.0",
+    "slate-hyperscript": "^0.81.3",
+    "slate-react": "^0.92.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.10.2",
+    "payload": "file:./../../",
+    "typescript": "^4.9.4",
+    "@types/react": "^18.2.18"
+  }
+}
