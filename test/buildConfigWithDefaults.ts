@@ -16,7 +16,7 @@ export function buildConfigWithDefaults(
   };
 
   config.admin = {
-    richText: slateAdapter() as any, // TODO: Fix this
+    richText: slateAdapter(),
     autoLogin:
       process.env.PAYLOAD_PUBLIC_DISABLE_AUTO_LOGIN === 'true'
         ? false
